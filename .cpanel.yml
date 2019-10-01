@@ -3,3 +3,4 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/sistecom/public_html/windsor
     - /bin/cp -R mvc $DEPLOYPATH
+    - /bin/cp -R assets $DEPLOYPATH
