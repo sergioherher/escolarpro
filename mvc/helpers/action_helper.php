@@ -501,6 +501,7 @@ function display_menu($nodes, &$menu) {
         }
 
         if( permissionChecker($node['link']) || ($node['link'] == '#' && $f) ) {
+            
             if($f && count($node['child']) == 1) {
                 $f = 0;
                 $node = current($node['child']);
@@ -524,11 +525,13 @@ function display_menu($nodes, &$menu) {
 
             $menu .= '<li class="'.($f ? $treeView : '').$active.'">';
                 $menu .= anchor($node['link'], '<i class="fa '.($node['icon'] != NULL ? $node['icon'] : 'fa-home').'"></i><span>'. ($CI->lang->line('menu_'.$node['menuName']) != NULL ? $CI->lang->line('menu_'.$node['menuName']) : $node['menuName']).'</span> '.($f ? $leftIcon : ''));
+
                 if ($f) {
                     $menu .= '<ul class="treeview-menu">';
                         display_menu($node['child'],$menu);
                     $menu .= "</ul>";
                 }
+
             $menu .= "</li>";
         }
 

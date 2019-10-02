@@ -110,3 +110,4 @@ $lang['menu_mailandsms'] = "Correo";
 $lang['menu_mailandsmstemplate'] = "Plantilla De Correo";
 $lang['menu_invoice'] = "Factura";
 $lang['menu_conversation'] = "Conversación";
+$lang['menu_secretariat'] = "Secretaría";
