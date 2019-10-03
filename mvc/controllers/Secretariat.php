@@ -202,10 +202,24 @@ class Secretariat extends Admin_Controller {
 
 	public function index() {
 		$usertypeID = $this->session->userdata('usertypeID');
-		if($usertypeID == 3 || $usertypeID == 1) {
+		if($usertypeID == 5 || $usertypeID == 1) {
 			if(permissionChecker('secretariat')) {
 				$this->data["applicants"] = $this->applicant_m->get_applicant();
 				$this->data["subview"] = "secretariat/index";
+				$this->load->view('_layout_main', $this->data);
+			} else {
+				$this->data["subview"] = "error";
+				$this->load->view('_layout_main', $this->data);
+			}
+		} 
+	}
+
+	public function add() {
+		$usertypeID = $this->session->userdata('usertypeID');
+		if($usertypeID == 5 || $usertypeID == 1) {
+			if(permissionChecker('applicant_add')) {
+				$this->data["classes"] = $this->classes_m->get_classes();
+				$this->data["subview"] = "applicant/add";
 				$this->load->view('_layout_main', $this->data);
 			} else {
 				$this->data["subview"] = "error";

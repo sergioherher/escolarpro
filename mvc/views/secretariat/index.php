@@ -18,7 +18,7 @@
                         $usertype = $this->session->userdata("usertype");
                         if(permissionChecker('applicant_add')) {
                     ?>
-                        <a class="btn btn-success" href="<?php echo base_url('applicant/add') ?>">
+                        <a class="btn btn-success" href="<?php echo base_url('secretariat/add') ?>">
                             <i class="fa fa-plus"></i>
                             <?=$this->lang->line('add_title')?>
                         </a>
