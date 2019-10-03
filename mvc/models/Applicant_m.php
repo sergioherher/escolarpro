@@ -5,7 +5,7 @@ class Applicant_m extends MY_Model {
 	protected $_table_name = 'applicants';
 	protected $_primary_key = 'applicantsID';
 	protected $_primary_filter = 'intval';
-	protected $_order_by = "name asc";
+	protected $_order_by = "nombres asc";
 
 	function __construct() {
 		parent::__construct();
