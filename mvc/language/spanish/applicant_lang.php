@@ -4,6 +4,7 @@ $lang['panel_title'] = "Aspirantes";
 $lang['add_title'] = "Agregar Aspirante";
 $lang['slno'] = "#";
 $lang['applicant_doc_type'] = "Tipo de Documento";
+$lang['edit_applicant'] = "Editar Aspirante";
 $lang['applicant_photo'] = "Foto";
 $lang['applicant_lastname'] = "Apellido";
 $lang['applicant_age'] = "Edad";

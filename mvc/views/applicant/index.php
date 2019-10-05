@@ -1,12 +1,9 @@
-
 <div class="box">
     <div class="box-header">
         <h3 class="box-title"><i class="fa icon-student"></i> <?=$this->lang->line('panel_title')?></h3>
-
-
         <ol class="breadcrumb">
             <li><a href="<?=base_url("dashboard/index")?>"><i class="fa fa-laptop"></i> <?=$this->lang->line('menu_dashboard')?></a></li>
-            <li class="active"><?=$this->lang->line('menu_student')?></li>
+            <li class="active"><?=$this->lang->line('menu_applicant')?></li>
         </ol>
     </div><!-- /.box-header -->
     <!-- form start -->
@@ -76,13 +73,13 @@
                                                     <td data-title="<?=$this->lang->line('applicant_name')?>">
                                                         <?php echo $applicant->nombres; ?>
                                                     </td>
-                                                    <td data-title="<?=$this->lang->line('applicant_email')?>">
-                                                        <?php echo $applicant->email; ?>
+                                                    <td data-title="<?=$this->lang->line('applicant_lastname')?>">
+                                                        <?php echo $applicant->apellido1; ?>
                                                     </td>
                                                     <?php if(permissionChecker('applicant_edit')) { ?>
                                                     <td data-title="<?=$this->lang->line('applicant_status')?>">
                                                         <div class="onoffswitch-small" id="<?=$applicant->applicantsID?>">
-                                                            <input type="checkbox" id="myonoffswitch<?=$applicant->applicantsID?>" class="onoffswitch-small-checkbox" name="paypal_demo" <?php if($applicant->active === '1') echo "checked='checked'"; ?>>
+                                                            <input type="checkbox" id="myonoffswitch<?=$applicant->applicantsID?>" class="onoffswitch-small-checkbox" name="paypal_demo" <?php if($applicant->is_active === '1') echo "checked='checked'"; ?>>
                                                             <label for="myonoffswitch<?=$applicant->applicantsID?>" class="onoffswitch-small-label">
                                                                 <span class="onoffswitch-small-inner"></span>
                                                                 <span class="onoffswitch-small-switch"></span>
@@ -97,6 +94,7 @@
                                                             echo btn_view('applicant/view/'.$applicant->applicantsID, $this->lang->line('view'));
                                                             echo btn_edit('applicant/edit/'.$applicant->applicantsID, $this->lang->line('edit'));
                                                             echo btn_delete('applicant/delete/'.$applicant->applicantsID, $this->lang->line('delete'));
+                                                            echo btn_payment_applicant('applicant/payment/'.$applicant->applicantsID, $this->lang->line('payment'), $applicant->is_pago);
                                                         ?>
                                                     </td>
                                                     <?php } ?>
@@ -117,86 +115,94 @@
 </div><!-- /.box -->
 
 <script type="text/javascript">
-    $(".select2").select2();
-
-    $('#classesID').change(function() {
-        var classesID = $(this).val();
-        if(classesID == 0) {
-            $('#hide-table').hide();
-            $('.nav-tabs-custom').hide();
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: "<?=base_url('applicant/applicant_list')?>",
-                data: "id=" + classesID,
-                dataType: "html",
-                success: function(data) {
-                    window.location.href = data;
-                }
-            });
-        }
-    });
 
 
-    var status = '';
-    var id = 0;
-    $('.onoffswitch-small-checkbox').click(function() {
-        if($(this).prop('checked')) {
-            status = 'chacked';
-            id = $(this).parent().attr("id");
-        } else {
-            status = 'unchacked';
-            id = $(this).parent().attr("id");
-        }
+    $(document).ready(function(){
 
-        if((status != '' || status != null) && (id !='')) {
-            $.ajax({
-                type: 'POST',
-                url: "<?=base_url('applicant/active')?>",
-                data: "id=" + id + "&status=" + status,
-                dataType: "html",
-                success: function(data) {
-                    if(data == 'Success') {
-                        toastr["success"]("Success")
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": false,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "500",
-                            "hideDuration": "500",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-                    } else {
-                        toastr["error"]("Error")
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": false,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "500",
-                            "hideDuration": "500",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
+        $(".select2").select2();
+
+        $(".btn-disabled").attr('disabled', true);
+
+        $('#classesID').change(function() {
+            var classesID = $(this).val();
+            if(classesID == 0) {
+                $('#hide-table').hide();
+                $('.nav-tabs-custom').hide();
+                window.location.href = "<?=base_url('applicant/index')?>";
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?=base_url('applicant/applicant_list')?>",
+                    data: "id=" + classesID,
+                    dataType: "html",
+                    success: function(data) {
+                        window.location.href = data;
+                    }
+                });
+            }
+        });
+
+        var status = '';
+        var id = 0;
+        $('.onoffswitch-small-checkbox').click(function() {
+            if($(this).prop('checked')) {
+                status = 'chacked';
+                id = $(this).parent().attr("id");
+            } else {
+                status = 'unchacked';
+                id = $(this).parent().attr("id");
+            }
+
+            if((status != '' || status != null) && (id !='')) {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?=base_url('applicant/active')?>",
+                    data: "id=" + id + "&status=" + status,
+                    dataType: "html",
+                    success: function(data) {
+                        if(data == 'Success') {
+                            toastr["success"]("Success")
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-top-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "500",
+                                "hideDuration": "500",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            }
+                        } else {
+                            toastr["error"]("Error")
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-top-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "500",
+                                "hideDuration": "500",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            }
                         }
                     }
-                }
-            });
-        }
-    });
+                });
+            }
+        });
+
+});
 </script>

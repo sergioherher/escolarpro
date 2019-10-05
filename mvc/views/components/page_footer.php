@@ -38,9 +38,18 @@
                   'csvHtml5',
                   'pdfHtml5'
               ],
-              search: false
-          } );
-        } );
+              search: false,
+              language: {
+                url: "<?php echo base_url('assets/datatables/es.json'); ?>"
+              },
+              /*columnDefs: [
+                {
+                  targets: 5,
+                  width: '100'
+                }
+              ],*/
+          });
+        });
         </script>
         <!-- dataTable with buttons end -->
 

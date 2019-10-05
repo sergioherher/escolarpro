@@ -201,17 +201,44 @@ class Applicant extends Admin_Controller {
 	}
 
 	public function index() {
+
+		$this->data['headerassets'] = array(
+			'css' => array(
+				'assets/datepicker/datepicker.css',
+				'assets/select2/css/select2.css',
+				'assets/select2/css/select2-bootstrap.css'
+			),
+			'js' => array(
+				'assets/datepicker/datepicker.js',
+				'assets/select2/select2.js'
+			)
+		);
+
 		$usertypeID = $this->session->userdata('usertypeID');
+		$id = htmlentities(escapeString($this->uri->segment(3)));
 		if($usertypeID == 5 || $usertypeID == 1) {
 			if(permissionChecker('applicant')) {
-				$this->data["applicants"] = $this->applicant_m->get_applicant();
-				$this->data["subview"] = "applicant/index";
-				$this->load->view('_layout_main', $this->data);
+				if((int)$id) {
+					$this->data["classes"] = $this->classes_m->get_classes();
+					$grado['grado_aspira'] = $id;
+					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($grado);
+					$this->data["set"] = $id;
+					$this->data["subview"] = "applicant/index";
+					$this->load->view('_layout_main', $this->data);
+				} else {
+					$this->data["classes"] = $this->classes_m->get_classes();
+					$this->data["applicants"] = $this->applicant_m->get_applicant();
+					$this->data["subview"] = "applicant/index";
+					$this->load->view('_layout_main', $this->data); 
+				}
 			} else {
 				$this->data["subview"] = "error";
 				$this->load->view('_layout_main', $this->data);
 			}
-		} 
+		} else {
+			$this->data["subview"] = "error";
+			$this->load->view('_layout_main', $this->data);
+		}
 	}
 
 	public function add() {
@@ -495,12 +522,84 @@ class Applicant extends Admin_Controller {
 		return TRUE;
 	}
 
+	public function delete() {
+		$usertype = $this->session->userdata("usertype");
+		$id = htmlentities(escapeString($this->uri->segment(3)));
+		if ((int)$id) {
+			$this->data['applicant'] = $this->applicant_m->get_single_applicant(array('applicantsID' => $id));
+			if($this->data['applicant']) {
+				$this->applicant_m->delete_applicant($id);
+				$this->session->set_flashdata('success', $this->lang->line('menu_success'));
+				redirect(base_url("applicant/index"));
+			} else {
+				redirect(base_url("applicant/index"));
+			}
+		} else {
+			redirect(base_url("applicant/index"));
+		}
+
+	}
+
+	public function payment() {
+		$usertype = $this->session->userdata("usertype");
+		$id = htmlentities(escapeString($this->uri->segment(3)));
+		if ((int)$id) {
+			$this->data['applicant'] = $this->applicant_m->get_single_applicant(array('applicantsID' => $id));
+			if($this->data['applicant']) {
+				$this->applicant_m->update_applicant(array('is_pago' => 1), $id);
+				$this->session->set_flashdata('success', $this->lang->line('menu_success'));
+				redirect(base_url("applicant/index"));
+			} else {
+				redirect(base_url("applicant/index"));
+			}
+		} else {
+			redirect(base_url("applicant/index"));
+		}
+
+	}
+
 	public function unique_classesID() {
 		if($this->input->post('classesID') == 0) {
 			$this->form_validation->set_message("unique_classesID", "%s es requerido.");
 	     	return FALSE;
 		}
 		return TRUE;
+	}
+
+	public function applicant_list() {
+		$classID = $this->input->post('id');
+		if((int)$classID) {
+			$string = base_url("applicant/index/$classID");
+			echo $string;
+		} else {
+			redirect(base_url("applicant/index"));
+		}
+	}
+
+	public function active() {
+		if(permissionChecker('applicant_edit')) {
+			$id = $this->input->post('id');
+			$status = $this->input->post('status');
+			if($id != '' && $status != '') {
+				if((int)$id) {
+					if($status == 'chacked') {
+						$this->applicant_m->update_applicant(array('is_active' => 1), $id);
+						echo 'Success';
+					} elseif($status == 'unchacked') {
+						$this->applicant_m->update_applicant(array('is_active' => 0), $id);
+						echo 'Success';
+					} else {
+						echo "Error";
+					}
+				} else {
+					echo "Error";
+				}
+			} else {
+				echo "Error";
+			}
+		} else {
+			echo "Error";
+		}
 	}
 }
 

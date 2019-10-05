@@ -270,86 +270,91 @@
 </div><!-- /.box -->
 
 <script type="text/javascript">
-    $(".select2").select2();
 
-    $('#classesID').change(function() {
-        var classesID = $(this).val();
-        if(classesID == 0) {
-            $('#hide-table').hide();
-            $('.nav-tabs-custom').hide();
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: "<?=base_url('student/student_list')?>",
-                data: "id=" + classesID,
-                dataType: "html",
-                success: function(data) {
-                    window.location.href = data;
-                }
-            });
-        }
-    });
+    $(document).ready(function(){
+        
+        $(".select2").select2();
+
+        $('#classesID').change(function() {
+            var classesID = $(this).val();
+            if(classesID == 0) {
+                $('#hide-table').hide();
+                $('.nav-tabs-custom').hide();
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?=base_url('student/student_list')?>",
+                    data: "id=" + classesID,
+                    dataType: "html",
+                    success: function(data) {
+                        window.location.href = data;
+                    }
+                });
+            }
+        });
 
 
-    var status = '';
-    var id = 0;
-    $('.onoffswitch-small-checkbox').click(function() {
-        if($(this).prop('checked')) {
-            status = 'chacked';
-            id = $(this).parent().attr("id");
-        } else {
-            status = 'unchacked';
-            id = $(this).parent().attr("id");
-        }
+        var status = '';
+        var id = 0;
+        $('.onoffswitch-small-checkbox').click(function() {
+            if($(this).prop('checked')) {
+                status = 'chacked';
+                id = $(this).parent().attr("id");
+            } else {
+                status = 'unchacked';
+                id = $(this).parent().attr("id");
+            }
 
-        if((status != '' || status != null) && (id !='')) {
-            $.ajax({
-                type: 'POST',
-                url: "<?=base_url('student/active')?>",
-                data: "id=" + id + "&status=" + status,
-                dataType: "html",
-                success: function(data) {
-                    if(data == 'Success') {
-                        toastr["success"]("Success")
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": false,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "500",
-                            "hideDuration": "500",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-                    } else {
-                        toastr["error"]("Error")
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": false,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "500",
-                            "hideDuration": "500",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
+            if((status != '' || status != null) && (id !='')) {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?=base_url('student/active')?>",
+                    data: "id=" + id + "&status=" + status,
+                    dataType: "html",
+                    success: function(data) {
+                        if(data == 'Success') {
+                            toastr["success"]("Success")
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-top-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "500",
+                                "hideDuration": "500",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            }
+                        } else {
+                            toastr["error"]("Error")
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-top-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "500",
+                                "hideDuration": "500",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            }
                         }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
+
     });
 </script>

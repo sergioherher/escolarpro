@@ -17,6 +17,11 @@ class Applicant_m extends MY_Model {
 		return $query->result();
 	}
 
+	function get_order_by_applicant($array=NULL) {
+		$query = parent::get_order_by($array);
+		return $query;
+	}
+
 	function get_applicant($array=NULL, $signal=FALSE) {
 		$query = parent::get($array, $signal);
 		return $query;

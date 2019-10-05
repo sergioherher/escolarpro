@@ -94,6 +94,28 @@ function btn_delete($uri, $name) {
     return '';
 }
 
+function btn_payment_applicant($uri, $name, $is_pago) {
+    if(visibleButton($uri)) {
+        if($is_pago == 1){
+            $class = " btn-disabled";
+            $icon = "check";
+        } else {
+            $class = "";
+            $icon = "money";
+        }
+        return anchor($uri, "<i class='fa fa-".$icon."'></i>",
+            array(
+                'onclick' => "return confirm('Estas apunto de reportar el pago de inscripción por parte de un aspirante,  ¿Está seguro de realizar esta acción?')",
+                'class' => 'btn btn-primary btn-xs mrg'.$class,
+                'data-placement' => 'top',
+                'data-toggle' => 'tooltip',
+                'data-original-title' => $name,
+            )
+        );
+    }
+    return '';
+}
+
 function btn_delete_show($uri, $name) {
     return anchor($uri, "<i class='fa fa-trash-o'></i>",
         array(
