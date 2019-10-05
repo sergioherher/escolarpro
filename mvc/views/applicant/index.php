@@ -18,7 +18,7 @@
                         $usertype = $this->session->userdata("usertype");
                         if(permissionChecker('applicant_add')) {
                     ?>
-                        <a class="btn btn-success" href="<?php echo base_url('secretariat/add') ?>">
+                        <a class="btn btn-success" href="<?php echo base_url('applicant/add') ?>">
                             <i class="fa fa-plus"></i>
                             <?=$this->lang->line('add_title')?>
                         </a>
@@ -94,9 +94,9 @@
                                                     <td data-title="<?=$this->lang->line('action')?>">
                                                         <?php
 
-                                                            echo btn_view('applicant/view/'.$applicant->applicantsID."/".$set, $this->lang->line('view'));
-                                                            echo btn_edit('applicant/edit/'.$applicant->applicantsID."/".$set, $this->lang->line('edit'));
-                                                            echo btn_delete('applicant/delete/'.$applicant->applicantsID."/".$set, $this->lang->line('delete'));
+                                                            echo btn_view('applicant/view/'.$applicant->applicantsID, $this->lang->line('view'));
+                                                            echo btn_edit('applicant/edit/'.$applicant->applicantsID, $this->lang->line('edit'));
+                                                            echo btn_delete('applicant/delete/'.$applicant->applicantsID, $this->lang->line('delete'));
                                                         ?>
                                                     </td>
                                                     <?php } ?>
