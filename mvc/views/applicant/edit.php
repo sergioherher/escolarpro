@@ -1123,7 +1123,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-8">
-                            <button type="subsmit" class="btn btn-success"><?=$this->lang->line("add_applicant")?></button> 
+                            <button type="subsmit" class="btn btn-success"><?=$this->lang->line("edit_applicant")?></button> 
                         </div>
                     </div>
 
