@@ -1,5 +1,8 @@
 <?php
-
+$lang['applicant_edit_psico_file'] = "Editar expediente psicológico";
+$lang['applicant_eval_date'] = "Fecha de evaluación";
+$lang['applicant_test_date'] = "Fecha de entrevista";
+$lang['applicant_file'] = "Expediente";
 $lang['panel_title'] = "Aspirantes";
 $lang['add_title'] = "Agregar Aspirante";
 $lang['slno'] = "#";

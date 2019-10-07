@@ -26,6 +26,7 @@ $lang['Librarian'] = "Bibliotecario";
 $lang['Receptionist'] = "Recepcionista";
 $lang['success'] = "Bien";
 $lang['cmessage'] = "Su Contraseña Cambia.";
+$lang['menu_psicology'] = "Psicología";
 $lang['menu_add'] = "Agregar";
 $lang['menu_edit'] = "Editar";
 $lang['menu_view'] = "Ver";
