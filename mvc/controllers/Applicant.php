@@ -205,11 +205,13 @@ class Applicant extends Admin_Controller {
 		$this->data['headerassets'] = array(
 			'css' => array(
 				'assets/datepicker/datepicker.css',
+				'assets/datetimepicker/datetimepicker.css',
 				'assets/select2/css/select2.css',
 				'assets/select2/css/select2-bootstrap.css'
 			),
 			'js' => array(
 				'assets/datepicker/datepicker.js',
+				'assets/datetimepicker/datetimepicker.js',
 				'assets/select2/select2.js'
 			)
 		);

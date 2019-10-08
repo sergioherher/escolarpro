@@ -50,14 +50,16 @@
                                         <thead>
                                             <tr>
                                                 <th class="col-sm-1"><?=$this->lang->line('slno')?></th>
-                                                <th class="col-sm-2"><?=$this->lang->line('applicant_dni')?></th> 
+                                                <th class="col-sm-1"><?=$this->lang->line('applicant_dni')?></th> 
                                                 <th class="col-sm-2"><?=$this->lang->line('applicant_name')?></th>
-                                                <th class="col-sm-2"><?=$this->lang->line('applicant_email')?></th>
+                                                <th class="col-sm-1"><?=$this->lang->line('applicant_lastname')?></th>
+                                                <th class="col-sm-1"><?=$this->lang->line('applicant_test_date')?></th>
+                                                <th class="col-sm-1"><?=$this->lang->line('applicant_eval_date')?></th>
                                                 <?php if(permissionChecker('applicant_edit')) { ?>
                                                 <th class="col-sm-1"><?=$this->lang->line('applicant_status')?></th>
                                                 <?php } ?>
                                                 <?php if(permissionChecker('applicant_edit') || permissionChecker('applicant_delete') || permissionChecker('applicant_view')) { ?>
-                                                <th class="col-sm-5"><?=$this->lang->line('action')?></th>
+                                                <th class="col-sm-1"><?=$this->lang->line('action')?></th>
                                                 <?php } ?>
                                             </tr>
                                         </thead>
@@ -75,6 +77,12 @@
                                                     </td>
                                                     <td data-title="<?=$this->lang->line('applicant_lastname')?>">
                                                         <?php echo $applicant->apellido1; ?>
+                                                    </td>
+                                                    <td data-title="<?=$this->lang->line('applicant_test_date')?>">
+                                                        <?php echo $applicant->fecha_entrev; ?>
+                                                    </td>
+                                                    <td data-title="<?=$this->lang->line('applicant_eval_date')?>">
+                                                        <?php echo $applicant->fecha_eval; ?>
                                                     </td>
                                                     <?php if(permissionChecker('applicant_edit')) { ?>
                                                     <td data-title="<?=$this->lang->line('applicant_status')?>">
@@ -94,7 +102,7 @@
                                                             echo btn_view('applicant/view/'.$applicant->applicantsID, $this->lang->line('view'));
                                                             echo btn_edit('applicant/edit/'.$applicant->applicantsID, $this->lang->line('edit'));
                                                             echo btn_delete('applicant/delete/'.$applicant->applicantsID, $this->lang->line('delete'));
-                                                            echo btn_payment_applicant('applicant/payment/'.$applicant->applicantsID, $this->lang->line('payment'), $applicant->is_pago);
+                                                            echo btn_payment_applicant('applicant/payment/'.$applicant->applicantsID, $this->lang->line('applicant_payment'), $applicant->is_pago);
                                                         ?>
                                                     </td>
                                                     <?php } ?>

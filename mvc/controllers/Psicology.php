@@ -204,11 +204,14 @@ class Psicology extends Admin_Controller {
 
 		$this->data['headerassets'] = array(
 			'css' => array(
+				'assets/datetimepicker/datetimepicker.css',
 				'assets/datepicker/datepicker.css',
 				'assets/select2/css/select2.css',
 				'assets/select2/css/select2-bootstrap.css'
 			),
 			'js' => array(
+				'assets/datetimepicker/moment.js',
+				'assets/datetimepicker/datetimepicker.js',
 				'assets/datepicker/datepicker.js',
 				'assets/select2/select2.js'
 			)
@@ -216,18 +219,52 @@ class Psicology extends Admin_Controller {
 
 		$usertypeID = $this->session->userdata('usertypeID');
 		$id = htmlentities(escapeString($this->uri->segment(3)));
+		$lap_or_class = explode("_", $id);
 		if($usertypeID == 10 || $usertypeID == 1) {
 			if(permissionChecker('psicology')) {
-				if((int)$id) {
+				if($lap_or_class['0'] == "class") {
 					$this->data["classes"] = $this->classes_m->get_classes();
-					$grado['grado_aspira'] = $id;
+					$grado['grado_aspira'] = $lap_or_class[1];
+					$grado['is_pago'] = 1;
 					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($grado);
+					$this->data["set"] = $id;
+					$this->data["subview"] = "psicology/index";
+					$this->load->view('_layout_main', $this->data);
+				} elseif($lap_or_class['0'] == "lap") {
+					$this->data["classes"] = $this->classes_m->get_classes();
+					$fecha['is_pago'] = 1;
+					if($lap_or_class['1'] == 1) {
+						$fecha = date('Y-m-d');
+						$fecha_insc['fecha_insc'] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+					} elseif($lap_or_class['1'] == 2) {
+						$time = strtotime('-1 days');
+						$fecha = date('Y-m-d', $time);
+						$fecha_insc['fecha_insc'] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+					} elseif($lap_or_class['1'] == 3) {
+						$time = strtotime('-7 days');
+						$fecha = date('Y-m-d', $time);
+						$fecha_insc['fecha_insc >='] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+					} elseif($lap_or_class['1'] == 4) {
+						$time = strtotime('-30 days');
+						$fecha = date('Y-m-d', $time);
+						$fecha_insc['fecha_insc >='] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+					} elseif($lap_or_class['1'] == 5) {
+						$time = strtotime('-365 days');
+						$fecha = date('Y-m-d', $time);
+						$fecha_insc['fecha_insc >='] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+					}
 					$this->data["set"] = $id;
 					$this->data["subview"] = "psicology/index";
 					$this->load->view('_layout_main', $this->data);
 				} else {
 					$this->data["classes"] = $this->classes_m->get_classes();
-					$this->data["applicants"] = $this->applicant_m->get_applicant();
+					$is_pago['is_pago'] = 1;
+					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($is_pago);
 					$this->data["subview"] = "psicology/index";
 					$this->load->view('_layout_main', $this->data); 
 				}
@@ -568,11 +605,15 @@ class Psicology extends Admin_Controller {
 
 	public function applicant_list() {
 		$classID = $this->input->post('id');
+		$lapTime = $this->input->post('lap');
 		if((int)$classID) {
-			$string = base_url("applicant/index/$classID");
+			$string = base_url("psicology/index/class_$classID");
+			echo $string;
+		} elseif((int)$lapTime) {
+			$string = base_url("psicology/index/lap_$lapTime");
 			echo $string;
 		} else {
-			redirect(base_url("applicant/index"));
+			redirect(base_url("psicology/index"));
 		}
 	}
 
