@@ -642,6 +642,30 @@ class Psicology extends Admin_Controller {
 			echo "Error";
 		}
 	}
+
+	public function set_fecha_entrev() {
+
+		$fecha_entrev = $this->input->post('fecha_entrev');
+		$id = $this->input->post('id');
+
+		if($this->applicant_m->update_applicant(array('fecha_entrev' => $fecha_entrev), $id)) {
+			echo json_encode(array("success" => true, "title" => $this->lang->line('applicant_title_fecha_entrev'), "message" => $this->lang->line('applicant_test_fecha_set'), "id" => $id));
+		} else {
+			echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_fecha_entrev'), "message" => $this->lang->line('applicant_test_fecha_error'), "id" => $id));
+		}
+	}
+
+	public function set_fecha_eval() {
+
+		$fecha_eval = $this->input->post('fecha_eval');
+		$id = $this->input->post('id');
+
+		if($this->applicant_m->update_applicant(array('fecha_eval' => $fecha_eval), $id)) {
+			echo json_encode(array("success" => true, "title" => $this->lang->line('applicant_title_fecha_eval'), "message" => $this->lang->line('applicant_eval_fecha_set'), "id" => $id));
+		} else {
+			echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_fecha_eval'), "message" => $this->lang->line('applicant_eval_fecha_error'), "id" => $id));
+		}
+	}
 }
 
 /* End of file applicant.php */

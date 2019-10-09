@@ -96,32 +96,32 @@
                                                         <button  class="btn btn-success btn-xs check_is_entrev-<?=$applicant->applicantsID?>" title="<?=$this->lang->line('applicant_check_test')?>"><i class="fa fa-check"></i></button>
                                                         <button  class="btn btn-primary btn-xs check_transfer-<?=$applicant->applicantsID?>" title="<?=$this->lang->line('applicant_transfer')?>"><i class="fa fa-exchange"></i></button>
                                                     </td>
-                                                    <td data-title="<?=$this->lang->line('applicant_test_date')?>">
+                                                    <td data-title="<?=$this->lang->line('applicant_eval_date')?>">
                                                         <div>
                                                             <div style="display: inline; float: left">
-                                                                <input size="15" class="form-control input-sm input-fecha-entrev" type="text" name="fecha_entrev">
+                                                                <input size="15" id="input_fecha_eval-<?=$applicant->applicantsID?>" class="form-control input-sm input_fecha_eval" type="text" name="fecha_eval" value="<?=$applicant->fecha_eval?>">
                                                             </div>
                                                             <div>
                                                                 <div style="display: inline; float: left">
-                                                                   <button  class="btn btn-success btn-xs save_psico_fecha_entrev" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-check"></i></button> 
+                                                                   <button  id="save_psico_fecha_eval-<?=$applicant->applicantsID?>" class="btn btn-success btn-xs save_psico_fecha_eval" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-check"></i></button> 
                                                                 </div>
                                                                 <div style="display: inline; float: left">
-                                                                    <button  class="btn btn-danger btn-xs clear_psico_fecha_entrev" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-times"></i></button>
+                                                                    <button id="clear_psico_fecha_eval-<?=$applicant->applicantsID?>" class="btn btn-danger btn-xs clear_psico_fecha_eval" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-times"></i></button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td data-title="<?=$this->lang->line('applicant_eval_date')?>">
+                                                    <td data-title="<?=$this->lang->line('applicant_test_date')?>">
                                                         <div>
                                                             <div style="display: inline; float: left">
-                                                                <input size="15" class="form-control input-sm input-fecha-eval" type="text" name="fecha_eval">
+                                                                <input size="15" id="input_fecha_entrev-<?=$applicant->applicantsID?>" class="form-control input-sm input_fecha_entrev" type="text" name="fecha_entrev" value="<?=$applicant->fecha_entrev?>">
                                                             </div>
                                                             <div>
                                                                 <div style="display: inline; float: left">
-                                                                   <button  class="btn btn-success btn-xs save_psico_fecha_eval" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-check"></i></button> 
+                                                                   <button id="save_psico_fecha_entrev-<?=$applicant->applicantsID?>" class="btn btn-success btn-xs save_psico_fecha_entrev" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-check"></i></button> 
                                                                 </div>
                                                                 <div style="display: inline; float: left">
-                                                                    <button  class="btn btn-danger btn-xs clear_psico_fecha_eval" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-times"></i></button>
+                                                                    <button id=" clear_psico_fecha_entrev-<?=$applicant->applicantsID?>" class="btn btn-danger btn-xs clear_psico_fecha_entrev" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-times"></i></button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -151,6 +151,122 @@
 
 
     $(document).ready(function(){
+
+        $(".save_psico_fecha_entrev").click(function(e){
+            e.preventDefault();
+            var array_id = this.id.split('-');
+            var id = array_id[1];
+
+            var fecha_entrev = $("#input_fecha_entrev-"+id).val();
+
+            $.ajax({
+                type: 'POST',
+                url: "<?=base_url('psicology/set_fecha_entrev')?>",
+                data: {fecha_entrev:fecha_entrev, id:id},
+                dataType: "json",
+                success: function(data) {
+                    if(data.success) {
+                        toastr.success(data.message, data.title);
+                    } else {
+                        toastr.error(data.message, data.title);
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+
+        });
+
+        $(".save_psico_fecha_eval").click(function(e){
+            e.preventDefault();
+            var array_id = this.id.split('-');
+            var id = array_id[1];
+
+            var fecha_eval = $("#input_fecha_eval-"+id).val();
+
+            $.ajax({
+                type: 'POST',
+                url: "<?=base_url('psicology/set_fecha_eval')?>",
+                data: {fecha_eval:fecha_eval, id:id},
+                dataType: "json",
+                success: function(data) {
+                    if(data.success) {
+                        toastr.success(data.message, data.title);
+                    } else {
+                        toastr.error(data.message, data.title);
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+
+        });
+
+        $(".clear_psico_fecha_entrev").click(function(e){
+            e.preventDefault();
+            var array_id = this.id.split('-');
+            var id = array_id[1];
+
+            if(confirm("<?=$this->lang->line('applicant_clear_fecha_entrev')?>")) {
+
+                $("#input_fecha_entrev-"+id).val("");
+
+                var fecha_entrev = "0000-00-00 00:00:00";
+
+                $.ajax({
+                    type: 'POST',
+                    url: "<?=base_url('psicology/set_fecha_entrev')?>",
+                    data: {fecha_entrev:fecha_entrev, id:id},
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.success) {
+                            toastr.success(data.message, data.title);
+                        } else {
+                            toastr.error(data.message, data.title);
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+
+            }
+
+        });
+
+        $(".clear_psico_fecha_eval").click(function(e){
+            e.preventDefault();
+            var array_id = this.id.split('-');
+            var id = array_id[1];
+
+            if(confirm("<?=$this->lang->line('applicant_clear_fecha_eval')?>")) {
+
+                $("#input_fecha_eval-"+id).val("");
+
+                var fecha_eval = "0000-00-00 00:00:00";
+
+                $.ajax({
+                    type: 'POST',
+                    url: "<?=base_url('psicology/set_fecha_eval')?>",
+                    data: {fecha_entrev:fecha_eval, id:id},
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.success) {
+                            toastr.success(data.message, data.title);
+                        } else {
+                            toastr.error(data.message, data.title);
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+
+            }
+
+        });
 
         $(".select2").select2();
 
@@ -194,11 +310,11 @@
             }
         });
 
-        $('.input-fecha-entrev').datetimepicker({
+        $('.input_fecha_entrev').datetimepicker({
             format: 'YYYY-MM-DD hh:mm'
         });
 
-        $('.input-fecha-eval').datetimepicker({
+        $('.input_fecha_eval').datetimepicker({
             format: 'YYYY-MM-DD hh:mm'
         });
 

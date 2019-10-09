@@ -2,6 +2,14 @@
 $lang['applicant_edit_psico_file'] = "Editar expediente psicológico";
 $lang['applicant_eval_date'] = "Fecha de evaluación";
 $lang['applicant_test_date'] = "Fecha de entrevista";
+$lang['applicant_test_fecha_set'] = "Fecha de entrevista establecida";
+$lang['applicant_test_fecha_error'] = "Ocurrió un error al fijar la fecha de entrevista";
+$lang['applicant_title_fecha_entrev'] = "Fecha de entrevista";
+$lang['applicant_clear_fecha_entrev'] = "¿Confirma que desea cancelar la fecha de entrevista del aspirante?";
+$lang['applicant_eval_fecha_set'] = "Fecha de evaluación establecida";
+$lang['applicant_eval_fecha_error'] = "Ocurrió un error al fijar la fecha de evaluación";
+$lang['applicant_title_fecha_eval'] = "Fecha de evaluación";
+$lang['applicant_clear_fecha_eval'] = "¿Confirma que desea cancelar la fecha de evaluación del aspirante?";
 $lang['applicant_file'] = "Expediente";
 $lang['panel_title'] = "Aspirantes";
 $lang['add_title'] = "Agregar Aspirante";
