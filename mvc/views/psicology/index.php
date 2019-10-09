@@ -91,10 +91,17 @@
                                                     </td>
                                                     <?php if(permissionChecker('psicology_edit')) { ?>
                                                     <td data-title="<?=$this->lang->line('applicant_edit_psico_file')?>">
-                                                        <button  class="btn btn-warning btn-xs edit_psico_file-<?=$applicant->applicantsID?>" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-edit"></i></button>
-                                                        <button  class="btn btn-success btn-xs check_is_eval-<?=$applicant->applicantsID?>" title="<?=$this->lang->line('applicant_check_eval')?>"><i class="fa fa-check"></i></button>
-                                                        <button  class="btn btn-success btn-xs check_is_entrev-<?=$applicant->applicantsID?>" title="<?=$this->lang->line('applicant_check_test')?>"><i class="fa fa-check"></i></button>
-                                                        <button  class="btn btn-primary btn-xs check_transfer-<?=$applicant->applicantsID?>" title="<?=$this->lang->line('applicant_transfer')?>"><i class="fa fa-exchange"></i></button>
+                                                        <button id="edit_psico_file-<?=$applicant->applicantsID?>" class="btn btn-warning btn-xs edit_psico_file" title="<?=$this->lang->line('applicant_edit_psico_file')?>"><i class="fa fa-edit"></i>
+                                                        </button>
+
+                                                        <button <?=($applicant->is_fecha_eval == 1)?'disabled':''?> id="check_is_eval-<?=$applicant->applicantsID?>" class="btn btn-success btn-xs check_is_eval" title="<?=$this->lang->line('applicant_check_eval')?>"><i class="fa fa-<?=($applicant->is_fecha_eval == 1)?'thumbs-up':'check'?>"></i>
+                                                        </button>
+
+                                                        <button <?=($applicant->is_fecha_entrev == 1)?'disabled':''?> id="check_is_entrev-<?=$applicant->applicantsID?>" class="btn btn-success btn-xs check_is_entrev" title="<?=$this->lang->line('applicant_check_test')?>"><i class="fa fa-<?=($applicant->is_fecha_entrev == 1)?'thumbs-up':'check'?>"></i>
+                                                        </button>
+
+                                                        <button id="check_transfer-<?=$applicant->applicantsID?>" class="btn btn-primary btn-xs check_transfer" title="<?=$this->lang->line('applicant_transfer')?>"><i class="fa fa-exchange"></i>
+                                                        </button>
                                                     </td>
                                                     <td data-title="<?=$this->lang->line('applicant_eval_date')?>">
                                                         <div>
@@ -143,14 +150,430 @@
     </div><!-- Body -->
 </div><!-- /.box -->
 
-<div class="modal">
-        
+<div class="modal fade" tabindex="-1" role="dialog" id="psico_file">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formPsicoFile">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <h4><?=$this->lang->line("applicant_personal_history")?></h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('desarrollo_fisico'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="desarrollo_fisico" class="control-label">
+                                <?=$this->lang->line("applicant_phisical_development")?>
+                            </label>
+                            <textarea rows="2" class="form-control" id="desarrollo_fisico" name="desarrollo_fisico" value="<?=set_value('desarrollo_fisico')?>" ></textarea> 
+                            <span class="control-label">
+                                <?php echo form_error('desarrollo_fisico'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <h5><?=$this->lang->line("applicant_psicological_development")?></h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('desarrollo_psicologico_lenguaje'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="desarrollo_psicologico_lenguaje" class="control-label">
+                                <?=$this->lang->line("applicant_languaje")?>
+                            </label>
+                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_lenguaje" name="desarrollo_psicologico_lenguaje" value="<?=set_value('desarrollo_psicologico_lenguaje')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('desarrollo_psicologico_lenguaje'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('desarrollo_psicologico_aprendizaje'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="desarrollo_psicologico_aprendizaje" class="control-label">
+                                <?=$this->lang->line("applicant_learning")?>
+                            </label>
+                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_aprendizaje" name="desarrollo_psicologico_aprendizaje" value="<?=set_value('desarrollo_psicologico_aprendizaje')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('desarrollo_psicologico_aprendizaje'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('desarrollo_psicologico_comportamiento'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="desarrollo_psicologico_comportamiento" class="control-label">
+                                <?=$this->lang->line("applicant_behavior")?>
+                            </label>
+                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_comportamiento" name="desarrollo_psicologico_comportamiento" value="<?=set_value('desarrollo_psicologico_comportamiento')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('desarrollo_psicologico_comportamiento'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('desarrollo_psicologico_afecto'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="desarrollo_psicologico_afecto" class="control-label">
+                                <?=$this->lang->line("applicant_afinity")?>
+                            </label>
+                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_afecto" name="desarrollo_psicologico_afecto" value="<?=set_value('desarrollo_psicologico_afecto')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('desarrollo_psicologico_afecto'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('desarrollo_psicologico_autocuidado'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="desarrollo_psicologico_autocuidado" class="control-label">
+                                <?=$this->lang->line("applicant_selfcare")?>
+                            </label>
+                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_autocuidado" name="desarrollo_psicologico_autocuidado" value="<?=set_value('desarrollo_psicologico_autocuidado')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('desarrollo_psicologico_autocuidado'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('desarrollo_psicologico_remisiones'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="desarrollo_psicologico_remisiones" class="control-label">
+                                <?=$this->lang->line("applicant_remisions")?>
+                            </label>
+                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_remisiones" name="desarrollo_psicologico_remisiones" value="<?=set_value('desarrollo_psicologico_remisiones')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('desarrollo_psicologico_remisiones'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <h5><?=$this->lang->line("applicant_family_precedent")?></h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('ante_flia_nucleo_familiar'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="ante_flia_nucleo_familiar" class="control-label">
+                                <?=$this->lang->line("applicant_family_core")?>
+                            </label>
+                                <textarea rows="2" class="form-control" id="ante_flia_nucleo_familiar" name="ante_flia_nucleo_familiar" value="<?=set_value('ante_flia_nucleo_familiar')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('ante_flia_nucleo_familiar'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('ante_flia_estado_civil_padres'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="ante_flia_nucleo_familiar" class="control-label">
+                                <?=$this->lang->line("applicant_family_parents_civil_state")?>
+                            </label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="ante_flia_estado_civil_padres" id="ante_flia_estado_civil_padres_1" value="CASADOS" checked>
+                                <label style="padding-right: 10px" class="form-check-label" for="ante_flia_estado_civil_padres_1"><?=$this->lang->line("applicant_family_married")?></label>
+
+                                <input class="form-check-input" type="radio" name="ante_flia_estado_civil_padres" id="ante_flia_estado_civil_padres_2" value="DIVORCIADOS" >
+                                <label style="padding-right: 10px"  class="form-check-label" for="ante_flia_estado_civil_padres_2"><?=$this->lang->line("applicant_family_divorcied")?></label>
+
+                                <input class="form-check-input" type="radio" name="ante_flia_estado_civil_padres" id="ante_flia_estado_civil_padres_3" value="SEPARADOS" >
+                                <label style="padding-right: 10px"  class="form-check-label" for="ante_flia_estado_civil_padres_3"><?=$this->lang->line("applicant_family_split")?></label>
+
+                                <input class="form-check-input" type="radio" name="ante_flia_estado_civil_padres" id="ante_flia_estado_civil_padres_4" value="UNIÓN LIBRE" >
+                                <label style="padding-right: 10px"  class="form-check-label" for="ante_flia_estado_civil_padres_4"><?=$this->lang->line("applicant_family_free_union")?></label>
+
+                                <input class="form-check-input" type="radio" name="ante_flia_estado_civil_padres" id="ante_flia_estado_civil_padres_5" value="OTRO" >
+                                <label style="padding-right: 10px"  class="form-check-label" for="ante_flia_estado_civil_padres_5"><?=$this->lang->line("applicant_family_other")?></label>
+                            </div>
+                            <span class="control-label">
+                                <?php echo form_error('ante_flia_estado_civil_padres'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <?php
+                    if(form_error('ante_flia_relacion_entre_padres'))
+                        echo "<div class='form-group has-error' >";
+                    else
+                        echo "<div class='form-group' >";
+                ?>
+                    <label for="ante_flia_relacion_entre_padres" class="col-sm-2 control-label">
+                        <?=$this->lang->line("applicant_parents_relationship")?>
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="ante_flia_relacion_entre_padres" name="ante_flia_relacion_entre_padres" value="<?=set_value('ante_flia_relacion_entre_padres')?>" >
+                    </div>
+                    <span class="col-sm-4 control-label">
+                        <?php echo form_error('ante_flia_relacion_entre_padres'); ?>
+                    </span>
+                </div>
+
+                <?php
+                    if(form_error('ante_flia_relacion_con_hermanos'))
+                        echo "<div class='form-group has-error' >";
+                    else
+                        echo "<div class='form-group' >";
+                ?>
+                    <label for="ante_flia_relacion_con_hermanos" class="col-sm-2 control-label">
+                        <?=$this->lang->line("applicant_brothers_relationship")?>
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="ante_flia_relacion_con_hermanos" name="ante_flia_relacion_con_hermanos" value="<?=set_value('ante_flia_relacion_con_hermanos')?>" >
+                    </div>
+                    <span class="col-sm-4 control-label">
+                        <?php echo form_error('ante_flia_relacion_con_hermanos'); ?>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <h5><?=$this->lang->line("applicant_school_history")?></h5>
+                    </div>
+                </div>
+
+                <?php
+                    if(form_error('hist_escolar_proc_academico'))
+                        echo "<div class='form-group has-error' >";
+                    else
+                        echo "<div class='form-group' >";
+                ?>
+                    <label for="hist_escolar_proc_academico" class="col-sm-2 control-label">
+                        <?=$this->lang->line("applicant_academic_process")?>
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="hist_escolar_proc_academico" name="hist_escolar_proc_academico" value="<?=set_value('hist_escolar_proc_academico')?>" >
+                    </div>
+                    <span class="col-sm-4 control-label">
+                        <?php echo form_error('hist_escolar_proc_academico'); ?>
+                    </span>
+                </div>
+
+
+                <?php
+                    if(form_error('hist_escolar_relacion_companieros'))
+                        echo "<div class='form-group has-error' >";
+                    else
+                        echo "<div class='form-group' >";
+                ?>
+                    <label for="hist_escolar_relacion_companieros" class="col-sm-2 control-label">
+                        <?=$this->lang->line("applicant_school_mates_relation")?>
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="hist_escolar_relacion_companieros" name="hist_escolar_relacion_companieros" value="<?=set_value('hist_escolar_relacion_companieros')?>" >
+                    </div>
+                    <span class="col-sm-4 control-label">
+                        <?php echo form_error('hist_escolar_relacion_companieros'); ?>
+                    </span>
+                </div>
+                
+
+                <?php
+                    if(form_error('hist_escolar_relacion_docentes'))
+                        echo "<div class='form-group has-error' >";
+                    else
+                        echo "<div class='form-group' >";
+                ?>
+                    <label for="hist_escolar_relacion_docentes" class="col-sm-2 control-label">
+                        <?=$this->lang->line("applicant_teacher_relation")?>
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="hist_escolar_relacion_docentes" name="hist_escolar_relacion_docentes" value="<?=set_value('hist_escolar_relacion_docentes')?>" >
+                    </div>
+                    <span class="col-sm-4 control-label">
+                        <?php echo form_error('hist_escolar_relacion_docentes'); ?>
+                    </span>
+                </div>
+                
+
+                <?php
+                    if(form_error('hist_escolar_comportamiento_escolar'))
+                        echo "<div class='form-group has-error' >";
+                    else
+                        echo "<div class='form-group' >";
+                ?>
+                    <label for="hist_escolar_comportamiento_escolar" class="col-sm-2 control-label">
+                        <?=$this->lang->line("applicant_schoolar_behavior")?>
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="hist_escolar_comportamiento_escolar" name="hist_escolar_comportamiento_escolar" value="<?=set_value('hist_escolar_comportamiento_escolar')?>" >
+                    </div>
+                    <span class="col-sm-4 control-label">
+                        <?php echo form_error('hist_escolar_comportamiento_escolar'); ?>
+                    </span>
+                </div>
+                
+
+                <?php
+                    if(form_error('hist_escolar_razones_windsor'))
+                        echo "<div class='form-group has-error' >";
+                    else
+                        echo "<div class='form-group' >";
+                ?>
+                    <label for="hist_escolar_razones_windsor" class="col-sm-2 control-label">
+                        <?=$this->lang->line("applicant_why_windsor")?>
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="hist_escolar_razones_windsor" name="hist_escolar_razones_windsor" value="<?=set_value('hist_escolar_razones_windsor')?>" >
+                    </div>
+                    <span class="col-sm-4 control-label">
+                        <?php echo form_error('hist_escolar_razones_windsor'); ?>
+                    </span>
+                </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript">
 
 
     $(document).ready(function(){
+
+        $(".edit_psico_file").click(function(e){
+            e.preventDefault();
+            $("#psico_file").modal('show');
+        });
+
+        $("#psico_file").modal('show');
+
+        $(".check_is_entrev").click(function(e){
+            e.preventDefault();
+            var array_id = this.id.split('-');
+            var id = array_id[1];
+            if(confirm("<?=$this->lang->line('applicant_set_is_fecha_entrev')?>")) {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?=base_url('psicology/set_is_fecha_entrev')?>",
+                    data: {is_fecha_entrev:1, id:id},
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.success) {
+                            toastr.success(data.message, data.title);
+                            $("#check_is_entrev-"+data.id+" i").removeClass('fa-check').addClass('fa-thumbs-up');
+                            $("#check_is_entrev-"+data.id).prop('disabled', true);
+                        } else {
+                            toastr.error(data.message, data.title);
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+        });
+
+        $(".check_is_eval").click(function(e){
+            e.preventDefault();
+            var array_id = this.id.split('-');
+            var id = array_id[1];
+            if(confirm("<?=$this->lang->line('applicant_set_is_fecha_eval')?>")) {
+                $.ajax({
+                    type: 'POST',
+                    url: "<?=base_url('psicology/set_is_fecha_eval')?>",
+                    data: {is_fecha_eval:1, id:id},
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.success) {
+                            toastr.success(data.message, data.title);
+                            $("#check_is_eval-"+data.id+" i").removeClass('fa-check').addClass('fa-thumbs-up');
+                            $("#check_is_eval-"+data.id).prop('disabled', true);
+                        } else {
+                            toastr.error(data.message, data.title);
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+        });
 
         $(".save_psico_fecha_entrev").click(function(e){
             e.preventDefault();
