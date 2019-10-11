@@ -9,6 +9,10 @@ class Psicology extends Admin_Controller {
 		$this->load->model("setting_m");
 		$this->load->model("idmanager_m");
 		$this->load->model("applicant_m");
+		$this->load->model("student_m");
+		$this->load->model("parents_m");
+		$this->load->model("studentrelation_m");
+		
 		$language = $this->session->userdata('lang');
 		$this->lang->load('applicant', $language);
 	}
@@ -224,47 +228,50 @@ class Psicology extends Admin_Controller {
 			if(permissionChecker('psicology')) {
 				if($lap_or_class['0'] == "class") {
 					$this->data["classes"] = $this->classes_m->get_classes();
-					$grado['grado_aspira'] = $lap_or_class[1];
-					$grado['is_pago'] = 1;
-					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($grado);
+					$filter_applicant['grado_aspira'] = $lap_or_class[1];
+					$filter_applicant['is_pago'] = 1;
+					$filter_applicant['is_trasladado'] = 0;
+					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					$this->data["set"] = $id;
 					$this->data["subview"] = "psicology/index";
 					$this->load->view('_layout_main', $this->data);
 				} elseif($lap_or_class['0'] == "lap") {
 					$this->data["classes"] = $this->classes_m->get_classes();
-					$fecha['is_pago'] = 1;
+					$filter_applicant['is_pago'] = 1;
+					$filter_applicant['is_trasladado'] = 0;
 					if($lap_or_class['1'] == 1) {
 						$fecha = date('Y-m-d');
-						$fecha_insc['fecha_insc'] = $fecha;
-						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+						$filter_applicant['fecha_insc'] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					} elseif($lap_or_class['1'] == 2) {
 						$time = strtotime('-1 days');
 						$fecha = date('Y-m-d', $time);
-						$fecha_insc['fecha_insc'] = $fecha;
-						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+						$filter_applicant['fecha_insc'] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					} elseif($lap_or_class['1'] == 3) {
 						$time = strtotime('-7 days');
 						$fecha = date('Y-m-d', $time);
-						$fecha_insc['fecha_insc >='] = $fecha;
-						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+						$filter_applicant['fecha_insc >='] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					} elseif($lap_or_class['1'] == 4) {
 						$time = strtotime('-30 days');
 						$fecha = date('Y-m-d', $time);
-						$fecha_insc['fecha_insc >='] = $fecha;
-						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+						$filter_applicant['fecha_insc >='] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					} elseif($lap_or_class['1'] == 5) {
 						$time = strtotime('-365 days');
 						$fecha = date('Y-m-d', $time);
-						$fecha_insc['fecha_insc >='] = $fecha;
-						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($fecha_insc);
+						$filter_applicant['fecha_insc >='] = $fecha;
+						$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					}
 					$this->data["set"] = $id;
 					$this->data["subview"] = "psicology/index";
 					$this->load->view('_layout_main', $this->data);
 				} else {
 					$this->data["classes"] = $this->classes_m->get_classes();
-					$is_pago['is_pago'] = 1;
-					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($is_pago);
+					$filter_applicant['is_pago'] = 1;
+					$filter_applicant['is_trasladado'] = 0;
+					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					$this->data["subview"] = "psicology/index";
 					$this->load->view('_layout_main', $this->data); 
 				}
@@ -688,6 +695,208 @@ class Psicology extends Admin_Controller {
 			echo json_encode(array("success" => true, "title" => $this->lang->line('applicant_title_is_fecha_eval'), "message" => $this->lang->line('applicant_is_eval_fecha_set'), "id" => $id));
 		} else {
 			echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_is_fecha_eval'), "message" => $this->lang->line('applicant_is_eval_fecha_error'), "id" => $id));
+		}
+	}
+
+	public function applicant_to_modal() {
+		if(permissionChecker('applicant_view')) {
+			$id = $this->input->post('id');
+			if($id != '') {
+				if((int)$id) {
+					$applicant = $this->applicant_m->get_single_applicant(array('applicantsID
+						' => $id));
+					echo json_encode(array("success" => true, "title" => $this->lang->line('applicant_load'), "message" => $this->lang->line('applicant_load'), "applicant" => $applicant));
+				} else {
+					echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_error'), "message" => $this->lang->line('applicant_error'), "id" => $id));
+				}
+			} else {
+				echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_error'), "message" => $this->lang->line('applicant_error'), "id" => $id));
+			}
+		} else {
+			echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_error'), "message" => $this->lang->line('applicant_permission_error'), "id" => $id));
+		}
+	}
+
+	public function modal_edit_applicant() {
+
+		if(permissionChecker('applicant_edit')) {
+
+			$applicantsID = $this->input->post('applicantsID'); 
+
+			$applicant = $this->applicant_m->get_single_applicant(array('applicantsID' => $applicantsID));
+
+            $desarrollo_fisico = $this->input->post('desarrollo_fisico'); 
+            $desarrollo_psicologico_lenguaje = $this->input->post('desarrollo_psicologico_lenguaje'); 
+            $desarrollo_psicologico_aprendizaje = $this->input->post('desarrollo_psicologico_aprendizaje'); 
+            $desarrollo_psicologico_comportamiento = $this->input->post('desarrollo_psicologico_comportamiento'); 
+            $desarrollo_psicologico_afecto = $this->input->post('desarrollo_psicologico_afecto'); 
+            $desarrollo_psicologico_autocuidado = $this->input->post('desarrollo_psicologico_autocuidado'); 
+            $desarrollo_psicologico_remisiones = $this->input->post('desarrollo_psicologico_remisiones'); 
+            $ante_flia_nucleo_familiar = $this->input->post('ante_flia_nucleo_familiar'); 
+            $ante_flia_estado_civil_padres = $this->input->post('ante_flia_estado_civil_padres'); 
+            $ante_flia_relacion_entre_padres = $this->input->post('ante_flia_relacion_entre_padres'); 
+            $ante_flia_relacion_con_hermanos = $this->input->post('ante_flia_relacion_con_hermanos'); 
+            $hist_escolar_proc_academico = $this->input->post('hist_escolar_proc_academico'); 
+            $hist_escolar_relacion_companieros = $this->input->post('hist_escolar_relacion_companieros'); 
+            $hist_escolar_relacion_docentes = $this->input->post('hist_escolar_relacion_docentes'); 
+            $hist_escolar_comportamiento_escolar = $this->input->post('hist_escolar_comportamiento_escolar'); 
+            $hist_escolar_razones_windsor = $this->input->post('hist_escolar_razones_windsor'); 
+
+            $data = array(
+	            'desarrollo_fisico' => $desarrollo_fisico, 
+	            'desarrollo_psicologico_lenguaje' => $desarrollo_psicologico_lenguaje, 
+	            'desarrollo_psicologico_aprendizaje' => $desarrollo_psicologico_aprendizaje, 
+	            'desarrollo_psicologico_comportamiento' => $desarrollo_psicologico_comportamiento, 
+	            'desarrollo_psicologico_afecto' => $desarrollo_psicologico_afecto, 
+	            'desarrollo_psicologico_autocuidado' => $desarrollo_psicologico_autocuidado, 
+	            'desarrollo_psicologico_remisiones' => $desarrollo_psicologico_remisiones, 
+	            'ante_flia_nucleo_familiar' => $ante_flia_nucleo_familiar, 
+	            'ante_flia_estado_civil_padres' => $ante_flia_estado_civil_padres, 
+	            'ante_flia_relacion_entre_padres' => $ante_flia_relacion_entre_padres, 
+	            'ante_flia_relacion_con_hermanos' => $ante_flia_relacion_con_hermanos, 
+	            'hist_escolar_proc_academico' => $hist_escolar_proc_academico, 
+	            'hist_escolar_relacion_companieros' => $hist_escolar_relacion_companieros, 
+	            'hist_escolar_relacion_docentes' => $hist_escolar_relacion_docentes, 
+	            'hist_escolar_comportamiento_escolar' => $hist_escolar_comportamiento_escolar, 
+	            'hist_escolar_razones_windsor' => $hist_escolar_razones_windsor 
+        	);
+
+            if($this->applicant_m->update_applicant($data, $applicantsID)) {
+            	echo json_encode(array("success" => true, "title" => $this->lang->line('applicant_title_psico_file_edit'), "message" => $this->lang->line('applicant_psico_file_edit').": ".$applicant->nombres." ".$applicant->apellido1, "id" => $applicantsID));
+            } else {
+            	echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_error'), "message" => $this->lang->line('applicant_error'), "id" => $id));
+            }
+			
+		} else {
+			echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_error'), "message" => $this->lang->line('applicant_permission_error'), "id" => $id));
+		}
+	}
+
+	public function transfer_applicant() {
+
+		$id = $this->input->post('id'); 
+
+		$applicant = $this->applicant_m->get_single_applicant(array('applicantsID' => $id));
+
+		if($applicant->is_trasladado == 0) {
+
+			$parent_username = explode('@', $applicant->parent_email);
+			$parent_password = $this->student_m->hash($parent_username[0]);
+
+			$data_parent = 	array(
+								'dni' => $applicant->parent_dni, 
+								'name' => $applicant->parent_name, 
+								'father_name' => $applicant->padre, 
+								'mother_name' => $applicant->madre, 
+								'father_profession' => $applicant->padre_prof,
+								'mother_profession' => $applicant->madre_prof,							
+								'email' => $applicant->parent_email,
+								'phone' => $applicant->parent_phone,
+								'address' => $applicant->parent_address,
+								'photo' => 'default.png',
+								'username' => $parent_username[0],
+								'password' => $parent_password,
+								'usertypeID' => 4,
+								'create_date' => date('Y-m-d'),
+								'modify_date' => date('Y-m-d'),
+								'create_userID' => 1,
+								'create_username' => 'admin',
+								'create_usertype' => 1,
+								'active' => 1,
+							);
+
+			if($parent_inserted = $this->parents_m->insert_parents($data_parent)) {
+			
+				$parentsID = $this->db->insert_id();
+
+				$section = $this->section_m->get_single_section(array('classesID' => $applicant->grado_aspira));
+				$classes = $this->classes_m->get_classes($applicant->grado_aspira);
+
+				if(count($classes)) {
+					$setClasses = $classes->classes;
+				} else {
+					$setClasses = NULL;
+				}
+
+				if(count($section)) {
+					$setSection = $section->section;
+				} else {
+					$setSection = NULL;
+				}
+
+				$student_username = explode('@', $applicant->email);
+				$student_password = $this->student_m->hash($student_username[0]);
+
+				$data_student = array(
+									    'dni' => $applicant->documento, 
+									  	'name' => $applicant->nombres." ".$applicant->apellido1." ".$applicant->apellido2, 
+									  	'dob' => $applicant->fecha_nac,
+									  	'sex' => $applicant->sexo,
+									  	'email' => $applicant->email,
+									  	'phone' => $applicant->telefono1,
+									  	'address' => $applicant->direccion,
+									  	'classesID' => $applicant->grado_aspira,
+									  	'roll' => 3,
+									  	'bloodgroup' => $applicant->grupo_sangre,
+									  	'country' => $applicant->pais_nac,
+									  	'registerNO' => $applicant->applicantsID, 
+									  	'state' => $applicant->depto_nac,
+									  	'schoolyearID' => $this->data['siteinfos']->school_year,
+										'parentID' => $parentsID,
+									  	'sectionID' => $section->sectionID,
+									  	'library' => 0,
+									  	'hostel' => 0,
+									  	'transport' => 0,
+									  	'create_date' => date("Y-m-d"),
+									  	'createschoolyearID' => $this->data['siteinfos']->school_year,
+									  	'schoolyearID' => $this->data['siteinfos']->school_year,
+									  	'create_date' => date("Y-m-d h:i:s"),
+									  	'modify_date' => date("Y-m-d h:i:s"),
+									  	'create_userID' => 1,
+									  	'create_username' => 'admin',
+									  	'create_usertype' => 1,
+									  	'active' => 1,
+									  	'username' => $student_username[0],
+									  	'password' => $student_password,
+									  	'usertypeID' => 3,
+									  	'photo' => 'default.png'
+									);
+
+				if($student_inserted = $this->student_m->insert_student($data_student)) {
+
+					$studentID = $this->db->insert_id();
+
+					$arrayStudentRelation = array(
+						'srstudentID' => $studentID,
+						//'srdni' => $this->input->post("dni"),
+						'srname' => $applicant->nombres." ".$applicant->apellido1." ".$applicant->apellido2,
+						'srclassesID' => $applicant->grado_aspira,
+						'srclasses' => $setClasses,
+						'srroll' => 3,
+						'srregisterNO' => $studentID,
+						'srsectionID' => $section->sectionID,
+						'srsection' => $setSection,
+						'srschoolyearID' => $this->data['siteinfos']->school_year
+					);
+					
+					$this->studentrelation_m->insert_studentrelation($arrayStudentRelation);
+					
+					$this->applicant_m->update_applicant(array('is_trasladado' => 1),$applicant->applicantsID);
+					
+					echo json_encode(array("success" => true, "title" => $this->lang->line('applicant_title_treansfer'), "message" => $this->lang->line('applicant_transfered'), 'id' => $id));
+				
+				} else {
+
+					$this->parents_m->delete_parents($parentsID); 
+				
+					echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_treansfer'), "message" => $this->lang->line('applicant_transfer_error_student_insert_error')));
+				
+				}
+			} else {
+				echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_treansfer'), "message" => $this->lang->line('applicant_transfer_error_parent_insert_error')));
+			}
+		} else{
+			echo json_encode(array("success" => false, "title" => $this->lang->line('applicant_title_treansfer'), "message" => $this->lang->line('applicant_transfer_error_applicant_transfered')));
 		}
 	}
 }

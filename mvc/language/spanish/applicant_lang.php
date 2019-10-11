@@ -20,7 +20,10 @@ $lang['applicant_set_is_fecha_eval'] = "¿Confirma que se efectuó la evaluació
 $lang['applicant_file'] = "Expediente";
 $lang['panel_title'] = "Aspirantes";
 $lang['add_title'] = "Agregar Aspirante";
+$lang['applicant_error'] = "Error de Aspirante";
+$lang['applicant_permission_error'] = "No tiene los permisos requeridos";
 $lang['slno'] = "#";
+$lang['save'] = "Guardar";
 $lang['applicant_doc_type'] = "Tipo de Documento";
 $lang['edit_applicant'] = "Editar Aspirante";
 $lang['applicant_photo'] = "Foto";
@@ -148,4 +151,12 @@ $lang['applicant_yesterday'] = "Ayer";
 $lang['applicant_a_week'] = "Una semana";
 $lang['applicant_a_month'] = "Un mes";
 $lang['applicant_a_year'] = "Un Año";
+$lang['applicant_psico_file_edit'] = "Se modificó exitosamente el expediente psicológico del aspirante";
+$lang['applicant_title_psico_file_edit'] = "Editar informe psicológico del aspirante";
+$lang['applicant_title_treansfer'] = "Transferencia de aspirante";
+$lang['applicant_transfered'] = "Se transfirio al aspirante exitosamente";
+$lang['applicant_transfer_error_student_insert_error'] = "Ocurrió un error al insertar al estudiante";
+$lang['applicant_transfer_error_parent_insert_error'] = "Ocurrió un error al insertar al representante";
+$lang['applicant_transfer_error_applicant_transfered'] = "Este aspirante ya fue transferido";
+
 

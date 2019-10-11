@@ -220,16 +220,17 @@ class Applicant extends Admin_Controller {
 		$id = htmlentities(escapeString($this->uri->segment(3)));
 		if($usertypeID == 5 || $usertypeID == 1) {
 			if(permissionChecker('applicant')) {
+				$filter_applicant['is_trasladado'] = 0;
 				if((int)$id) {
 					$this->data["classes"] = $this->classes_m->get_classes();
-					$grado['grado_aspira'] = $id;
-					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($grado);
+					$filter_applicant['grado_aspira'] = $id;
+					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					$this->data["set"] = $id;
 					$this->data["subview"] = "applicant/index";
 					$this->load->view('_layout_main', $this->data);
 				} else {
 					$this->data["classes"] = $this->classes_m->get_classes();
-					$this->data["applicants"] = $this->applicant_m->get_applicant();
+					$this->data["applicants"] = $this->applicant_m->get_order_by_applicant($filter_applicant);
 					$this->data["subview"] = "applicant/index";
 					$this->load->view('_layout_main', $this->data); 
 				}

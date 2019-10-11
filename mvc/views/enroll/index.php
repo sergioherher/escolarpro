@@ -666,6 +666,96 @@
 
 						  			</div>
 
+						  		</div><hr>
+
+						  		<div class="row" style="margin-bottom: 20px">
+
+						  			<div class="col-md-4">
+
+							  			<h6>3.3.- Datos del Representante</h6>
+
+						  			</div>
+
+						  		</div>
+
+						  		<div class="row">
+
+						  			<div class="col-md-4">
+
+							  			<div class="form-group">
+
+							  				<label class="form-label" for="parent_name">Nombres y apellidos</label>
+
+							  				<input type="text" class="form-control" id="parent_name" name="parent_name" value="<?=(array_key_exists('parent_name',$old))?$old['parent_name']:''?>">
+
+							  			</div>
+
+						  			</div>
+
+						  			<div class="col-md-4">
+
+							  			<div class="form-group">
+
+							  				<label class="form-label" for="parent_dni">Documento de identificación</label>
+
+							  				<input type="text" class="form-control" id="parent_dni" name="parent_dni" value="<?=(array_key_exists('parent_dni',$old))?$old['parent_dni']:''?>">
+
+							  			</div>
+
+						  			</div>
+
+						  			<div class="col-md-4">
+
+							  			<div class="form-group">
+
+							  				<label class="form-label" for="parent_profession">Profesión</label>
+
+							  				<input type="text" class="form-control" id="parent_profession" name="parent_profession" value="<?=(array_key_exists('parent_profession',$old))?$old['parent_profession']:''?>">
+
+							  			</div>
+
+						  			</div>
+
+						  		</div>
+
+						  		<div class="row">
+
+						  			<div class="col-md-4">
+
+							  			<div class="form-group">
+
+							  				<label class="form-label" for="parent_address">Dirección</label>
+
+							  				<input type="text" class="form-control" id="parent_address" name="parent_address" value="<?=(array_key_exists('parent_address',$old))?$old['parent_address']:''?>">
+
+							  			</div>
+
+						  			</div>
+
+						  			<div class="col-md-4">
+
+							  			<div class="form-group">
+
+							  				<label class="form-label" for="parent_phone">Teléfono</label>
+
+							  				<input type="text" class="form-control" id="parent_phone" name="parent_phone" value="<?=(array_key_exists('parent_phone',$old))?$old['parent_phone']:''?>">
+
+							  			</div>
+
+						  			</div>
+
+						  			<div class="col-md-4">
+
+							  			<div class="form-group">
+
+							  				<label class="form-label" for="parent_email">Email</label>
+
+							  				<input type="text" class="form-control" id="parent_email" name="parent_email" value="<?=(array_key_exists('parent_email',$old))?$old['parent_email']:''?>">
+
+							  			</div>
+
+						  			</div>
+
 						  		</div>
 
 						  		<hr>
@@ -1197,6 +1287,30 @@
         var form = $('#formRegistrarAspirante');
 	        form.validate({
 	            rules: {
+	            	parent_name: {
+	                    required: true,
+	                    maxlength: 80
+	                },
+	            	parent_phone: {
+	                    required: true,
+	                    maxlength: 80
+	                },
+	            	parent_email: {
+	                    required: true,
+	                    maxlength: 80
+	                },
+	            	parent_address: {
+	                    required: true,
+	                    maxlength: 80
+	                },
+	            	parent_dni: {
+	                    required: true,
+	                    maxlength: 80
+	                },
+	            	parent_profession: {
+	                    required: true,
+	                    maxlength: 80
+	                },
 	                nombres: {
 	                    required: true,
 	                    maxlength: 50

@@ -76,7 +76,7 @@
                                         </thead>
                                         <tbody>
                                             <?php if(count($applicants)) {$i = 1; foreach($applicants as $applicant) { ?>
-                                                <tr>
+                                                <tr id="row_applicant-<?=$applicant->applicantsID?>">
                                                     <td data-title="<?=$this->lang->line('slno')?>">
                                                         <?php echo $i; ?>
                                                     </td>
@@ -154,14 +154,34 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <div class="row">
+            <div class="col-sm-11">
+                <h4 class="modal-title">Expediente psicológico</h4>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
       </div>
       <div class="modal-body">
         <form id="formPsicoFile">
             <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <h5><?=$this->lang->line("applicant_name")?>: <span class="modal_applicant_name"></span></h5>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <h5><?=$this->lang->line("applicant_dob")?>: <span class="modal_applicant_dob"></span></h5>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -181,7 +201,7 @@
                             <label for="desarrollo_fisico" class="control-label">
                                 <?=$this->lang->line("applicant_phisical_development")?>
                             </label>
-                            <textarea rows="2" class="form-control" id="desarrollo_fisico" name="desarrollo_fisico" value="<?=set_value('desarrollo_fisico')?>" ></textarea> 
+                            <textarea rows="3" class="form-control" id="desarrollo_fisico" name="desarrollo_fisico" value="<?=set_value('desarrollo_fisico', )?>" ></textarea> 
                             <span class="control-label">
                                 <?php echo form_error('desarrollo_fisico'); ?>
                             </span>
@@ -208,7 +228,7 @@
                             <label for="desarrollo_psicologico_lenguaje" class="control-label">
                                 <?=$this->lang->line("applicant_languaje")?>
                             </label>
-                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_lenguaje" name="desarrollo_psicologico_lenguaje" value="<?=set_value('desarrollo_psicologico_lenguaje')?>" ></textarea>
+                                <textarea rows="3" class="form-control" id="desarrollo_psicologico_lenguaje" name="desarrollo_psicologico_lenguaje" value="<?=set_value('desarrollo_psicologico_lenguaje')?>" ></textarea>
                             <span class="control-label">
                                 <?php echo form_error('desarrollo_psicologico_lenguaje'); ?>
                             </span>
@@ -227,7 +247,7 @@
                             <label for="desarrollo_psicologico_aprendizaje" class="control-label">
                                 <?=$this->lang->line("applicant_learning")?>
                             </label>
-                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_aprendizaje" name="desarrollo_psicologico_aprendizaje" value="<?=set_value('desarrollo_psicologico_aprendizaje')?>" ></textarea>
+                                <textarea rows="3" class="form-control" id="desarrollo_psicologico_aprendizaje" name="desarrollo_psicologico_aprendizaje" value="<?=set_value('desarrollo_psicologico_aprendizaje')?>" ></textarea>
                             <span class="control-label">
                                 <?php echo form_error('desarrollo_psicologico_aprendizaje'); ?>
                             </span>
@@ -246,7 +266,7 @@
                             <label for="desarrollo_psicologico_comportamiento" class="control-label">
                                 <?=$this->lang->line("applicant_behavior")?>
                             </label>
-                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_comportamiento" name="desarrollo_psicologico_comportamiento" value="<?=set_value('desarrollo_psicologico_comportamiento')?>" ></textarea>
+                                <textarea rows="3" class="form-control" id="desarrollo_psicologico_comportamiento" name="desarrollo_psicologico_comportamiento" value="<?=set_value('desarrollo_psicologico_comportamiento')?>" ></textarea>
                             <span class="control-label">
                                 <?php echo form_error('desarrollo_psicologico_comportamiento'); ?>
                             </span>
@@ -265,7 +285,7 @@
                             <label for="desarrollo_psicologico_afecto" class="control-label">
                                 <?=$this->lang->line("applicant_afinity")?>
                             </label>
-                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_afecto" name="desarrollo_psicologico_afecto" value="<?=set_value('desarrollo_psicologico_afecto')?>" ></textarea>
+                                <textarea rows="3" class="form-control" id="desarrollo_psicologico_afecto" name="desarrollo_psicologico_afecto" value="<?=set_value('desarrollo_psicologico_afecto')?>" ></textarea>
                             <span class="control-label">
                                 <?php echo form_error('desarrollo_psicologico_afecto'); ?>
                             </span>
@@ -284,7 +304,7 @@
                             <label for="desarrollo_psicologico_autocuidado" class="control-label">
                                 <?=$this->lang->line("applicant_selfcare")?>
                             </label>
-                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_autocuidado" name="desarrollo_psicologico_autocuidado" value="<?=set_value('desarrollo_psicologico_autocuidado')?>" ></textarea>
+                                <textarea rows="3" class="form-control" id="desarrollo_psicologico_autocuidado" name="desarrollo_psicologico_autocuidado" value="<?=set_value('desarrollo_psicologico_autocuidado')?>" ></textarea>
                             <span class="control-label">
                                 <?php echo form_error('desarrollo_psicologico_autocuidado'); ?>
                             </span>
@@ -303,7 +323,8 @@
                             <label for="desarrollo_psicologico_remisiones" class="control-label">
                                 <?=$this->lang->line("applicant_remisions")?>
                             </label>
-                                <textarea rows="2" class="form-control" id="desarrollo_psicologico_remisiones" name="desarrollo_psicologico_remisiones" value="<?=set_value('desarrollo_psicologico_remisiones')?>" ></textarea>
+                                <input type="hidden" name="modal_applicantsID" id="modal_applicantsID">
+                                <textarea rows="3" class="form-control" id="desarrollo_psicologico_remisiones" name="desarrollo_psicologico_remisiones" value="<?=set_value('desarrollo_psicologico_remisiones')?>" ></textarea>
                             <span class="control-label">
                                 <?php echo form_error('desarrollo_psicologico_remisiones'); ?>
                             </span>
@@ -330,7 +351,7 @@
                             <label for="ante_flia_nucleo_familiar" class="control-label">
                                 <?=$this->lang->line("applicant_family_core")?>
                             </label>
-                                <textarea rows="2" class="form-control" id="ante_flia_nucleo_familiar" name="ante_flia_nucleo_familiar" value="<?=set_value('ante_flia_nucleo_familiar')?>" ></textarea>
+                                <textarea rows="3" class="form-control" id="ante_flia_nucleo_familiar" name="ante_flia_nucleo_familiar" value="<?=set_value('ante_flia_nucleo_familiar')?>" ></textarea>
                             <span class="control-label">
                                 <?php echo form_error('ante_flia_nucleo_familiar'); ?>
                             </span>
@@ -372,38 +393,42 @@
                     </div>
                 </div>
 
-                <?php
-                    if(form_error('ante_flia_relacion_entre_padres'))
-                        echo "<div class='form-group has-error' >";
-                    else
-                        echo "<div class='form-group' >";
-                ?>
-                    <label for="ante_flia_relacion_entre_padres" class="col-sm-2 control-label">
-                        <?=$this->lang->line("applicant_parents_relationship")?>
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="ante_flia_relacion_entre_padres" name="ante_flia_relacion_entre_padres" value="<?=set_value('ante_flia_relacion_entre_padres')?>" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('ante_flia_relacion_entre_padres'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="ante_flia_relacion_entre_padres" class="control-label">
+                                <?=$this->lang->line("applicant_parents_relationship")?>
+                            </label>
+                                <textarea rows="3" class="form-control" id="ante_flia_relacion_entre_padres" name="ante_flia_relacion_entre_padres" value="<?=set_value('ante_flia_relacion_entre_padres')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('ante_flia_relacion_entre_padres'); ?>
+                            </span>
+                        </div>
                     </div>
-                    <span class="col-sm-4 control-label">
-                        <?php echo form_error('ante_flia_relacion_entre_padres'); ?>
-                    </span>
                 </div>
 
-                <?php
-                    if(form_error('ante_flia_relacion_con_hermanos'))
-                        echo "<div class='form-group has-error' >";
-                    else
-                        echo "<div class='form-group' >";
-                ?>
-                    <label for="ante_flia_relacion_con_hermanos" class="col-sm-2 control-label">
-                        <?=$this->lang->line("applicant_brothers_relationship")?>
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="ante_flia_relacion_con_hermanos" name="ante_flia_relacion_con_hermanos" value="<?=set_value('ante_flia_relacion_con_hermanos')?>" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('ante_flia_relacion_con_hermanos'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="ante_flia_relacion_con_hermanos" class="control-label">
+                                <?=$this->lang->line("applicant_brothers_relationship")?>
+                            </label>
+                                <textarea rows="3" class="form-control" id="ante_flia_relacion_con_hermanos" name="ante_flia_relacion_con_hermanos" value="<?=set_value('ante_flia_relacion_con_hermanos')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('ante_flia_relacion_con_hermanos'); ?>
+                            </span>
+                        </div>
                     </div>
-                    <span class="col-sm-4 control-label">
-                        <?php echo form_error('ante_flia_relacion_con_hermanos'); ?>
-                    </span>
                 </div>
 
                 <div class="form-group">
@@ -412,100 +437,106 @@
                     </div>
                 </div>
 
-                <?php
-                    if(form_error('hist_escolar_proc_academico'))
-                        echo "<div class='form-group has-error' >";
-                    else
-                        echo "<div class='form-group' >";
-                ?>
-                    <label for="hist_escolar_proc_academico" class="col-sm-2 control-label">
-                        <?=$this->lang->line("applicant_academic_process")?>
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="hist_escolar_proc_academico" name="hist_escolar_proc_academico" value="<?=set_value('hist_escolar_proc_academico')?>" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('hist_escolar_proc_academico'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="hist_escolar_proc_academico" class="control-label">
+                                <?=$this->lang->line("applicant_academic_process")?>
+                            </label>
+                                <textarea rows="3" class="form-control" id="hist_escolar_proc_academico" name="hist_escolar_proc_academico" value="<?=set_value('hist_escolar_proc_academico')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('hist_escolar_proc_academico'); ?>
+                            </span>
+                        </div>
                     </div>
-                    <span class="col-sm-4 control-label">
-                        <?php echo form_error('hist_escolar_proc_academico'); ?>
-                    </span>
                 </div>
 
-
-                <?php
-                    if(form_error('hist_escolar_relacion_companieros'))
-                        echo "<div class='form-group has-error' >";
-                    else
-                        echo "<div class='form-group' >";
-                ?>
-                    <label for="hist_escolar_relacion_companieros" class="col-sm-2 control-label">
-                        <?=$this->lang->line("applicant_school_mates_relation")?>
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="hist_escolar_relacion_companieros" name="hist_escolar_relacion_companieros" value="<?=set_value('hist_escolar_relacion_companieros')?>" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('hist_escolar_relacion_companieros'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="hist_escolar_relacion_companieros" class="control-label">
+                                <?=$this->lang->line("applicant_school_mates_relation")?>
+                            </label>
+                                <textarea rows="3" class="form-control" id="hist_escolar_relacion_companieros" name="hist_escolar_relacion_companieros" value="<?=set_value('hist_escolar_relacion_companieros')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('hist_escolar_relacion_companieros'); ?>
+                            </span>
+                        </div>
                     </div>
-                    <span class="col-sm-4 control-label">
-                        <?php echo form_error('hist_escolar_relacion_companieros'); ?>
-                    </span>
                 </div>
-                
 
-                <?php
-                    if(form_error('hist_escolar_relacion_docentes'))
-                        echo "<div class='form-group has-error' >";
-                    else
-                        echo "<div class='form-group' >";
-                ?>
-                    <label for="hist_escolar_relacion_docentes" class="col-sm-2 control-label">
-                        <?=$this->lang->line("applicant_teacher_relation")?>
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="hist_escolar_relacion_docentes" name="hist_escolar_relacion_docentes" value="<?=set_value('hist_escolar_relacion_docentes')?>" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('hist_escolar_relacion_docentes'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="hist_escolar_relacion_docentes" class="control-label">
+                                <?=$this->lang->line("applicant_teacher_relation")?>
+                            </label>
+                                <textarea rows="3" class="form-control" id="hist_escolar_relacion_docentes" name="hist_escolar_relacion_docentes" value="<?=set_value('hist_escolar_relacion_docentes')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('hist_escolar_relacion_docentes'); ?>
+                            </span>
+                        </div>
                     </div>
-                    <span class="col-sm-4 control-label">
-                        <?php echo form_error('hist_escolar_relacion_docentes'); ?>
-                    </span>
-                </div>
-                
+                </div>  
 
-                <?php
-                    if(form_error('hist_escolar_comportamiento_escolar'))
-                        echo "<div class='form-group has-error' >";
-                    else
-                        echo "<div class='form-group' >";
-                ?>
-                    <label for="hist_escolar_comportamiento_escolar" class="col-sm-2 control-label">
-                        <?=$this->lang->line("applicant_schoolar_behavior")?>
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="hist_escolar_comportamiento_escolar" name="hist_escolar_comportamiento_escolar" value="<?=set_value('hist_escolar_comportamiento_escolar')?>" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('hist_escolar_comportamiento_escolar'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="hist_escolar_comportamiento_escolar" class="control-label">
+                                <?=$this->lang->line("applicant_schoolar_behavior")?>
+                            </label>
+                                <textarea rows="3" class="form-control" id="hist_escolar_comportamiento_escolar" name="hist_escolar_comportamiento_escolar" value="<?=set_value('hist_escolar_comportamiento_escolar')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('hist_escolar_comportamiento_escolar'); ?>
+                            </span>
+                        </div>
                     </div>
-                    <span class="col-sm-4 control-label">
-                        <?php echo form_error('hist_escolar_comportamiento_escolar'); ?>
-                    </span>
-                </div>
-                
+                </div>   
 
-                <?php
-                    if(form_error('hist_escolar_razones_windsor'))
-                        echo "<div class='form-group has-error' >";
-                    else
-                        echo "<div class='form-group' >";
-                ?>
-                    <label for="hist_escolar_razones_windsor" class="col-sm-2 control-label">
-                        <?=$this->lang->line("applicant_why_windsor")?>
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="hist_escolar_razones_windsor" name="hist_escolar_razones_windsor" value="<?=set_value('hist_escolar_razones_windsor')?>" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php
+                            if(form_error('hist_escolar_razones_windsor'))
+                                echo "<div class='form-group has-error' >";
+                            else
+                                echo "<div class='form-group' >";
+                        ?>
+                            <label for="hist_escolar_razones_windsor" class="control-label">
+                                <?=$this->lang->line("applicant_why_windsor")?>
+                            </label>
+                                <textarea rows="3" class="form-control" id="hist_escolar_razones_windsor" name="hist_escolar_razones_windsor" value="<?=set_value('hist_escolar_razones_windsor')?>" ></textarea>
+                            <span class="control-label">
+                                <?php echo form_error('hist_escolar_razones_windsor'); ?>
+                            </span>
+                        </div>
                     </div>
-                    <span class="col-sm-4 control-label">
-                        <?php echo form_error('hist_escolar_razones_windsor'); ?>
-                    </span>
-                </div>
+                </div> 
             </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary modal_save_applicant"><?=$this->lang->line("save")?></button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$this->lang->line("close")?></button>
       </div>
     </div>
   </div>
@@ -516,12 +547,128 @@
 
     $(document).ready(function(){
 
-        $(".edit_psico_file").click(function(e){
+        $(".check_transfer").click(function(e){
             e.preventDefault();
-            $("#psico_file").modal('show');
+            var array_id = this.id.split('-');
+            var id = array_id[1];
+            $.ajax({
+                type: 'POST',
+                url: "<?=base_url('psicology/transfer_applicant')?>",
+                data: {id:id},
+                dataType: "json",
+                success: function(data) {
+                    if(data.success) {
+                        $("#row_applicant-"+data.id).remove();
+                        toastr.success(data.message, data.title);
+                    } else {
+                        toastr.error(data.message, data.title);
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
         });
 
-        $("#psico_file").modal('show');
+        $(".modal_save_applicant").click(function(e){
+            e.preventDefault();
+
+            var applicantsID = $("#modal_applicantsID").val();
+            var desarrollo_fisico = $("#desarrollo_fisico").val();
+            var desarrollo_psicologico_lenguaje = $("#desarrollo_psicologico_lenguaje").val();
+            var desarrollo_psicologico_aprendizaje = $("#desarrollo_psicologico_aprendizaje").val();
+            var desarrollo_psicologico_comportamiento = $("#desarrollo_psicologico_comportamiento").val();
+            var desarrollo_psicologico_afecto = $("#desarrollo_psicologico_afecto").val();
+            var desarrollo_psicologico_autocuidado = $("#desarrollo_psicologico_autocuidado").val();
+            var desarrollo_psicologico_remisiones = $("#desarrollo_psicologico_remisiones").val();
+            var ante_flia_nucleo_familiar = $("#ante_flia_nucleo_familiar").val();
+            var ante_flia_estado_civil_padres = $('input[name=ante_flia_estado_civil_padres]:checked').val();
+            var ante_flia_relacion_entre_padres = $("#ante_flia_relacion_entre_padres").val();
+            var ante_flia_relacion_con_hermanos = $("#ante_flia_relacion_con_hermanos").val();
+            var hist_escolar_proc_academico = $("#hist_escolar_proc_academico").val();
+            var hist_escolar_relacion_companieros = $("#hist_escolar_relacion_companieros").val();
+            var hist_escolar_relacion_docentes = $("#hist_escolar_relacion_docentes").val();
+            var hist_escolar_comportamiento_escolar = $("#hist_escolar_comportamiento_escolar").val();
+            var hist_escolar_razones_windsor = $("#hist_escolar_razones_windsor").val();
+
+            $.ajax({
+                type: 'POST',
+                url: "<?=base_url('psicology/modal_edit_applicant')?>",
+                data: {
+                    applicantsID:applicantsID, 
+                    desarrollo_fisico:desarrollo_fisico, 
+                    desarrollo_psicologico_lenguaje:desarrollo_psicologico_lenguaje, 
+                    desarrollo_psicologico_aprendizaje:desarrollo_psicologico_aprendizaje, 
+                    desarrollo_psicologico_comportamiento:desarrollo_psicologico_comportamiento, 
+                    desarrollo_psicologico_afecto:desarrollo_psicologico_afecto, 
+                    desarrollo_psicologico_autocuidado:desarrollo_psicologico_autocuidado, 
+                    desarrollo_psicologico_remisiones:desarrollo_psicologico_remisiones, 
+                    ante_flia_nucleo_familiar:ante_flia_nucleo_familiar, 
+                    ante_flia_estado_civil_padres:ante_flia_estado_civil_padres, 
+                    ante_flia_relacion_entre_padres:ante_flia_relacion_entre_padres, 
+                    ante_flia_relacion_con_hermanos:ante_flia_relacion_con_hermanos, 
+                    hist_escolar_proc_academico:hist_escolar_proc_academico, 
+                    hist_escolar_relacion_companieros:hist_escolar_relacion_companieros, 
+                    hist_escolar_relacion_docentes:hist_escolar_relacion_docentes, 
+                    hist_escolar_comportamiento_escolar:hist_escolar_comportamiento_escolar, 
+                    hist_escolar_razones_windsor:hist_escolar_razones_windsor
+                },
+                dataType: "json",
+                success: function(data) {
+                    if(data.success) {
+                        toastr.success(data.message, data.title);
+                        $("#psico_file").modal('hide');
+                    } else {
+                        toastr.error(data.message, data.title);
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        $(".edit_psico_file").click(function(e){
+            e.preventDefault();
+            var array_id = this.id.split('-');
+            var id = array_id[1];
+            $.ajax({
+                type: 'POST',
+                url: "<?=base_url('psicology/applicant_to_modal')?>",
+                data: {id:id},
+                dataType: "json",
+                success: function(data) {
+                    if(data.success) {
+                        $(".modal_applicant_name").html(data.applicant.nombres+" "+data.applicant.apellido1);
+                        $(".modal_applicant_dob").html(data.applicant.fecha_nac.substr(0,10));
+                        $("#modal_applicantsID").val(data.applicant.applicantsID);
+                        $("#desarrollo_fisico").val(data.applicant.desarrollo_fisico);
+                        $("#desarrollo_psicologico_lenguaje").val(data.applicant.desarrollo_psicologico_lenguaje);
+                        $("#desarrollo_psicologico_aprendizaje").val(data.applicant.desarrollo_psicologico_aprendizaje);
+                        $("#desarrollo_psicologico_comportamiento").val(data.applicant.desarrollo_psicologico_comportamiento);
+                        $("#desarrollo_psicologico_afecto").val(data.applicant.desarrollo_psicologico_afecto);
+                        $("#desarrollo_psicologico_autocuidado").val(data.applicant.desarrollo_psicologico_autocuidado);
+                        $("#desarrollo_psicologico_remisiones").val(data.applicant.desarrollo_psicologico_remisiones);
+                        $("#ante_flia_nucleo_familiar").val(data.applicant.ante_flia_nucleo_familiar);
+                        $('input[name=ante_flia_estado_civil_padres]:checked').val(data.applicant.ante_flia_estado_civil_padres);
+                        $("#ante_flia_relacion_entre_padres").val(data.applicant.ante_flia_relacion_entre_padres);
+                        $("#ante_flia_relacion_con_hermanos").val(data.applicant.ante_flia_relacion_con_hermanos);
+                        $("#hist_escolar_proc_academico").val(data.applicant.hist_escolar_proc_academico);
+                        $("#hist_escolar_relacion_companieros").val(data.applicant.hist_escolar_relacion_companieros);
+                        $("#hist_escolar_relacion_docentes").val(data.applicant.hist_escolar_relacion_docentes);
+                        $("#hist_escolar_comportamiento_escolar").val(data.applicant.hist_escolar_comportamiento_escolar);
+                        $("#hist_escolar_razones_windsor").val(data.applicant.hist_escolar_razones_windsor);
+                    } else {
+                        toastr.error(data.message, data.title);
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+
+            $("#psico_file").modal('show');
+        });
 
         $(".check_is_entrev").click(function(e){
             e.preventDefault();

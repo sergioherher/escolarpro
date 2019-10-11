@@ -55,6 +55,14 @@ class Enroll extends CI_Controller {
             $applicant['padre_tel_ofi'] = mb_strtoupper($_POST['padre_tel_ofi']);
             $applicant['padre_tel_per'] = mb_strtoupper($_POST['padre_tel_per']);
             $applicant['padre_email'] = mb_strtoupper($_POST['padre_email']);
+
+            $applicant['parent_name'] = mb_strtoupper($_POST['parent_name']);
+            $applicant['parent_phone'] = mb_strtoupper($_POST['parent_phone']);
+            $applicant['parent_email'] = mb_strtoupper($_POST['parent_email']);
+            $applicant['parent_address'] = mb_strtoupper($_POST['parent_address']);
+            $applicant['parent_dni'] = mb_strtoupper($_POST['parent_dni']);
+            $applicant['parent_profession'] = mb_strtoupper($_POST['parent_profession']);
+
             $applicant['observaciones'] = mb_strtoupper($_POST['observaciones']);
             $applicant['desarrollo_fisico'] = mb_strtoupper($_POST['desarrollo_fisico']);
             $applicant['desarrollo_psicologico_lenguaje'] = mb_strtoupper($_POST['desarrollo_psicologico_lenguaje']);
